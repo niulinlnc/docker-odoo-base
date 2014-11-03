@@ -26,7 +26,7 @@ RUN cd /tmp/nodejs && ./configure && make install
 RUN curl -L https://npmjs.org/install.sh | sh
 RUN npm install less
 
-# We set the openerp and jamotion user and group fixed for compatibility with connectors and hosts
+# We set the openerp user and group fixed for compatibility with connectors and hosts
 RUN addgroup --gid=1000 openerp && adduser --system --uid=1000 --gid=1000 --home /home/openerp --shell /bin/bash openerp
 
 # Install newest version of wkhtmltopdf
