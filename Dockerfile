@@ -1,11 +1,9 @@
 FROM ubuntu:12.04
 MAINTAINER Renzo Meister <rm@jamotion.ch>
 
-# Update Package index
-RUN apt-get update 
-
 # Install needed packages
-RUN apt-get install -y --force-yes --no-install-recommends python-dateutil python-feedparser python-gdata python-ldap \
+RUN apt-get update && \
+  apt-get install -y --force-yes --no-install-recommends python-dateutil python-feedparser python-gdata python-ldap \
   python-libxslt1 python-lxml python-mako python-openid python-psycopg2 \ 
   python-pybabel python-pychart python-pydot python-pyparsing python-reportlab \ 
   python-simplejson python-tz python-vatnumber python-vobject python-webdav \ 
@@ -15,16 +13,22 @@ RUN apt-get install -y --force-yes --no-install-recommends python-dateutil pytho
   python-geoip python-gevent python-ldap python-lxml python-markupsafe python-pip \
   python-psutil python-psycopg2 python-pychart python-pydot python-pypdf \
   python-reportlab python-simplejson python-yaml python-uno \
-  postgresql-client python-decorator python-imaging python-requests python-passlib \
-  git bzr vim libreoffice curl openssh-server build-essential
+  python-decorator python-imaging python-requests python-passlib \
+  git bzr vim libreoffice curl openssh-server build-essential wget
+
+# Install PostgreSQL 9.3 client
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
+  wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
+  apt-get update && \
+  apt-get install -y --force-yes postgresql-client-9.3
 
 # Install NodeJS and Less compiler
-RUN mkdir -p /tmp/nodejs
-RUN cd /tmp/nodejs && curl http://nodejs.org/dist/node-latest.tar.gz | tar xz --strip-components=1
-RUN cd /tmp/nodejs && ./configure && make install
+RUN mkdir -p /tmp/nodejs && \
+ cd /tmp/nodejs && curl http://nodejs.org/dist/node-latest.tar.gz | tar xz --strip-components=1 && \
+ cd /tmp/nodejs && ./configure && make install
 
-RUN curl -L https://npmjs.org/install.sh | sh
-RUN npm install less
+RUN curl -L https://npmjs.org/install.sh | sh && \
+  npm install less
 
 # We set the openerp user and group fixed for compatibility with connectors and hosts
 RUN addgroup --gid=1000 openerp && adduser --system --uid=1000 --gid=1000 --home /home/openerp --shell /bin/bash openerp
