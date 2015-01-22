@@ -33,6 +33,8 @@ RUN curl -L https://npmjs.org/install.sh | sh && \
 # We set the openerp user and group fixed for compatibility with connectors and hosts
 RUN addgroup --gid=1000 openerp && adduser --system --uid=1000 --gid=1000 --home /home/openerp --shell /bin/bash openerp
 
+RUN apt-get install -y --force-yes --no-install-recommends xfonts-base xfonts-75dpi
+
 # Install newest version of wkhtmltopdf
 RUN cd /tmp && wget http://jamotion.ch/odoolib/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb &&\
     dpkg -i /tmp/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb
