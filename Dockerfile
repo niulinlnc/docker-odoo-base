@@ -13,7 +13,7 @@ RUN apt-get update && \
   python-geoip python-gevent python-ldap python-lxml python-markupsafe python-pip \
   python-psutil python-psycopg2 python-pychart python-pydot python-pypdf \
   python-reportlab python-simplejson python-yaml python-uno \
-  python-decorator python-imaging python-requests python-passlib \
+  python-decorator python-imaging python-requests python-passlib python-pyinotify \
   git bzr vim libreoffice curl openssh-server build-essential wget
 
 # Install PostgreSQL 9.3 client
