@@ -34,8 +34,8 @@ RUN curl -L https://npmjs.org/install.sh | sh && \
 RUN addgroup --gid=1000 openerp && adduser --system --uid=1000 --gid=1000 --home /home/openerp --shell /bin/bash openerp
 
 # Install newest version of wkhtmltopdf
-RUN cd /tmp && wget http://downloads.sourceforge.net/project/wkhtmltopdf/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb &&\
-    dpkg -i /tmp/wkhtmltox-0.12.1_linux-trusty-amd64.deb
+RUN cd /tmp && wget http://jamotion.ch/odoolib/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb &&\
+    dpkg -i /tmp/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb
 
 # We install the pycharm egg hardly for remote debugging
 ADD pycharm-debug.egg /tmp/pycharm-debug.egg
