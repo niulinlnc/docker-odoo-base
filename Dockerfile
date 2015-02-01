@@ -23,13 +23,10 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc
   apt-get install -y --force-yes postgresql-client-9.3
 
 # Install NodeJS and Less compiler
-RUN mkdir -p /tmp/nodejs && \
- cd /tmp/nodejs && curl http://nodejs.org/dist/node-latest.tar.gz | tar xz --strip-components=1 && \
- cd /tmp/nodejs && ./configure && make install
-
-RUN curl -L https://npmjs.org/install.sh | sh && \
-  npm install less
-
+RUN wget -qO- https://deb.nodesource.com/setup | bash - && \
+  apt-get install -y --force-yes --no-install-recommends nodejs && \
+  npm install -g less less-plugin-clean-css
+  
 # We set the openerp user and group fixed for compatibility with connectors and hosts
 RUN addgroup --gid=1000 openerp && adduser --system --uid=1000 --gid=1000 --home /home/openerp --shell /bin/bash openerp
 
