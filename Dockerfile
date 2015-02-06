@@ -1,4 +1,4 @@
-FROM ubuntu:12.04
+FROM ubuntu:14.04.1
 MAINTAINER Renzo Meister <rm@jamotion.ch>
 
 # Install needed packages
@@ -12,15 +12,10 @@ RUN apt-get update && \
   python-dev libpq-dev poppler-utils python-pdftools antiword python-setuptools python-pybabel \
   python-geoip python-gevent python-ldap python-lxml python-markupsafe python-pip \
   python-psutil python-psycopg2 python-pychart python-pydot python-pypdf \
-  python-reportlab python-simplejson python-yaml python-uno \
+  python-reportlab python-simplejson python-yaml \
   python-decorator python-imaging python-requests python-passlib python-pyinotify \
-  git bzr vim libreoffice curl openssh-server build-essential wget
-
-# Install PostgreSQL 9.3 client
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
-  wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
-  apt-get update && \
-  apt-get install -y --force-yes postgresql-client-9.3
+  git bzr vim libreoffice curl openssh-server build-essential wget \ 
+  python3-uno python3-pip default-jre postgresql-client xfonts-base xfonts-75dpi
 
 # Install NodeJS and Less compiler
 RUN wget -qO- https://deb.nodesource.com/setup | bash - && \
@@ -30,16 +25,11 @@ RUN wget -qO- https://deb.nodesource.com/setup | bash - && \
 # We set the openerp user and group fixed for compatibility with connectors and hosts
 RUN addgroup --gid=1000 openerp && adduser --system --uid=1000 --gid=1000 --home /home/openerp --shell /bin/bash openerp
 
-RUN apt-get install -y --force-yes --no-install-recommends xfonts-base xfonts-75dpi
-
-# Install newest version of wkhtmltopdf
-RUN cd /tmp && wget http://jamotion.ch/odoolib/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb &&\
-    dpkg -i /tmp/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb
-
-# We install the pycharm egg hardly for remote debugging
-ADD pycharm-debug.egg /tmp/pycharm-debug.egg
-RUN easy_install /tmp/pycharm-debug.egg
-
 # It's time to install aeroolib, which is used from aeroo reports
-RUN cd /tmp && git clone https://github.com/jamotion/aeroolib.git; \
-    cd /tmp/aeroolib && python setup.py install
+RUN apt-get install -y libcups2-dev
+RUN pip install git+https://github.com/aeroo/aeroolib.git@master pycups
+
+## aeroo docs
+RUN apt-get install -y python3-pip
+RUN pip3 install daemonize jsonrpc2
+RUN git clone https://github.com/aeroo/aeroo_docs.git /opt/odoo/aeroo_docs
