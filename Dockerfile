@@ -4,6 +4,7 @@ MAINTAINER Renzo Meister <rm@jamotion.ch>
 # Install needed packages
 RUN apt-get update && \
   apt-get install -y --force-yes --no-install-recommends python-dateutil python-feedparser python-gdata python-ldap \
+  cups cups-pdf python-cups wkhtmltopdf \
   python-libxslt1 python-lxml python-mako python-openid python-psycopg2 \ 
   python-pybabel python-pychart python-pydot python-pyparsing python-reportlab \ 
   python-simplejson python-tz python-vatnumber python-vobject python-webdav \ 
@@ -16,6 +17,11 @@ RUN apt-get update && \
   python-decorator python-imaging python-requests python-passlib python-pyinotify \
   git bzr vim libreoffice curl openssh-server build-essential wget \ 
   python3-uno python3-pip default-jre postgresql-client xfonts-base xfonts-75dpi
+
+# Install wkhtmltopdf
+RUN wget -P /tmp http://optimate.dl.sourceforge.net/project/wkhtmltopdf/0.12.2.1/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb && \
+  dpkg -i /tmp/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb && \
+  mv /usr/local/bin/wkhtml* /usr/bin/
 
 # Install NodeJS and Less compiler
 RUN wget -qO- https://deb.nodesource.com/setup | bash - && \
