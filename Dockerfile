@@ -18,6 +18,11 @@ RUN apt-get update && \
   git bzr vim libreoffice curl openssh-server build-essential wget \ 
   python3-uno python3-pip default-jre postgresql-client xfonts-base xfonts-75dpi
 
+# Add PPA and install latest version of git
+RUN apt-get install -y --force-yes --no-install-recommends python-software-properties software-properties-common && \
+  apt-get update && \
+  apt-get install git
+
 # Install wkhtmltopdf
 RUN wget -P /tmp http://optimate.dl.sourceforge.net/project/wkhtmltopdf/0.12.2.1/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb && \
   dpkg -i /tmp/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb && \
